@@ -1,4 +1,4 @@
-package frc.robot.autosubsystems;
+package frc.robot.subsystems;
 
 public interface Action {
 

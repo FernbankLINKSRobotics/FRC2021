@@ -15,11 +15,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.autosubsystems.DriveBackwards;
-import frc.robot.autosubsystems.DriveForward;
-import frc.robot.autosubsystems.DriveStop;
-import frc.robot.autosubsystems.*;
 import frc.robot.DriveBase;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,20 +42,39 @@ public class Robot extends TimedRobot {
   
   //------------------------------------------------------------------------------------------------------------
   // Auto (Custom):
-  public DriveForward autonomousDriveForward = new DriveForward(2);  // "2" is a target for DriveForward.
+    // Forward:
 
-  public DriveBackwards autonomousDriveBackwards = new DriveBackwards(2); // "2" is a target for DriveBackwards.
+    /*
 
-  public DriveStop autonomousDriveStop = new DriveStop(0); // "0" is a target for DriveBackwards.
-
-  public DriveTurnLeft autonomousDriveTurnLeft = new DriveTurnLeft(2); // "0" is a target for DriveTurnLeft.
-
-  public DriveTurnRight autonomousDriveTurnRight = new DriveTurnRight(2); // "0" is a target for DriveTurnRight.
-
-  // Auto (Default):
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    public LowDriveForward autonomousLowDriveForward = new LowDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
+    public MediumDriveForward autonomousMediumDriveForward = new MediumDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
+    public HighDriveForward autonomousHighDriveForward = new HighDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
+  
+      // Backwards:
+    public LowDriveBackwards autonomousLowDriveBackwards = new LowDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
+    public MediumDriveBackwards autonomousMediumDriveBackwards = new MediumDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
+    public HighDriveBackwards autonomousHighDriveBackwards = new HighDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
+  
+      // Turn Left:
+    public LowTurnLeft autonomousLowTurnLeft = new LowTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
+    public MediumTurnLeft autonomousMediumTurnLeft = new MediumTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
+    public HighTurnLeft autonomousHighTurnLeft = new HighTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
+  
+      // Turn Right:
+    public LowTurnRight autonomousLowTurnRight = new LowTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
+    public MediumTurnRight autonomousMediumTurnRight = new MediumTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
+    public HighTurnRight autonomousHighTurnRight = new HighTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
+  
+    public DriveStop autonomousDriveStop = new DriveStop(Constants.Robot.nulltarget); // "0" is a target for DriveBackwards.
+    
+    public ArmUp autonomousArmUp = new ArmUp();
+    */
+    // Auto (Default):
+    private static final String kDefaultAuto = "Default";
+    private static final String kCustomAuto = "My Auto";
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  
+    
 
   //------------------------------------------------------------------------------------------------------------
   /**
@@ -111,13 +127,13 @@ public class Robot extends TimedRobot {
       System.out.println("Timer Started!");
       //edu.wpi.first.wpilibj.Timer.delay(1);
 
-      autonomousDriveTurnRight.start();
+      //autonomousDriveTurnRight.start();
       edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveTurnRight.isComplete();
+      //autonomousDriveTurnRight.isComplete();
 
-      autonomousDriveStop.start();
+      //autonomousDriveStop.start();
       edu.wpi.first.wpilibj.Timer.delay(100);
-      autonomousDriveStop.isComplete();
+      //autonomousDriveStop.isComplete();
 
       /*
       autonomousDriveTurnLeft.start();

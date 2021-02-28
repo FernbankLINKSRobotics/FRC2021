@@ -1,4 +1,4 @@
-package frc.robot.autosubsystems;
+package frc.robot.subsystems;
 
 import frc.robot.Robot;
 
