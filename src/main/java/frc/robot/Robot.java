@@ -130,146 +130,6 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
       Timer Timer = new Timer();
       Timer.start();
-    /* 
-
-    // Jank Demonstration:
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousLowDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousLowDriveForward.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousLowDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousLowDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveForward.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-      
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousHighDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousHighDriveForward.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-      
-      autonomousHighDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1);
-      autonomousHighDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(1000);
-      autonomousDriveStop.isComplete();
-
-    // End of Jank Demonstration
-
-    */ 
-      //Timer Timer = new Timer();
-      //Timer.start();
-
-      //double power = 0.5;
-      //double timeInMillis = 2;
-      //DriveStraightForDistance(power, timeInMillis);   
-      
-      
-
-      //System.out.println("Timer Started!");
-      //edu.wpi.first.wpilibj.Timer.delay(1);
-      /*
-      autonomousArmUp.start();
-      edu.wpi.first.wpilibj.Timer.delay(1);
-      autonomousArmUp.isComplete();
-      */
-      //System.out.print("DriveForward Starting!");
-
-      /*
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(0.001);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      /*
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(100);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(5);
-      autonomousMediumDriveForward.isComplete();
-
-      //System.out.print("DriveStop Starting!");
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(100);
-      autonomousDriveStop.isComplete();
-      /*
-      autonomousDriveTurnLeft.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveTurnLeft.isComplete();
-
-      
-      //Drive Forward (For 2 Seconds)
-      autonomousDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveForward.isComplete();
-
-      //Drive Stop (For 2 Seconds)
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      //Drive Backwards (For 2 Seconds)
-      autonomousDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveBackwards.start();
-
-      //Drive Stop
-      autonomousDriveStop.start();
-      autonomousDriveStop.isComplete();
-      */
   }
 
   private Object Success() {
@@ -286,58 +146,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    test();
+
     armAndIntake();
     reseter(); 
     drive();
 
   }
 
-  private void armAndIntake() {
-    getDriveBaseInstance().armSystem(controller, left, right);
-
-  }
-
-  public CANEncoder leftfrontencoder;
-  public CANEncoder leftrearencoder;
-  public CANEncoder rightfrontencoder;
-  public CANEncoder rightrearencoder;
-  
-  public double leftsideencoders() {
-    double leftsideencoders;
-    return leftsideencoders = ((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
-  }
-
-
-  private void test() {
-    //CANSparkMax leftfrontmotorTest = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
-    leftfrontencoder = getDriveBaseInstance().leftfrontmotor.getEncoder();    
-    leftrearencoder = getDriveBaseInstance().leftrearmotor.getEncoder();    
-    rightfrontencoder = getDriveBaseInstance().rightfrontmotor.getEncoder();    
-    rightrearencoder = getDriveBaseInstance().rightrearmotor.getEncoder();    
-
-    
-
-    //System.out.print("After leftfrontencoder instantiate ------------------------------------------------------------------------------")
-    System.out.println("LeftFrontEncoder --> " + leftfrontencoder.getPosition());
-    System.out.println("LeftRearencoder --> " + leftrearencoder.getPosition());
-    System.out.println("RightFrontEncoder --> " + rightfrontencoder.getPosition());
-    System.out.println("RighRearEncoder --> " + rightrearencoder.getPosition());
-    System.out.println("");
-
-    System.out.println("Entire Left Side" + leftsideencoders());
-
-
-
-
-    //leftfrontencoder = leftfrontmotor.getEncoder();
-    //System.out.println("Encoder Position" + leftfrontencoder.getPosition());
-    //SmartDashboard.putNumber("Encoder Position", leftfrontencoder.getPosition());
-  }
-
-  public void drive() {
-    getDriveBaseInstance().arcadeDrive(controller, left, right);
-  }
   
   @Override
   public void disabledInit() {
