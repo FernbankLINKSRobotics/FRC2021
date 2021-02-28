@@ -1,7 +1,7 @@
-package frc.robot.subsystems;
+package frc.robot.subsystem;
 
-import com.kauailabs.navx.frc.AHRS;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
@@ -9,17 +9,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
-//import frc.robot.sensors.Limelight;
-import frc.robot.sensors.Pipeline;
 
 public class DriveBase {
 
     private CANSparkMax leftfrontmotor, leftrearmotor, rightfrontmotor, rightrearmotor;
-    //private WPI_VictorSPX Intake;
-    //private WPI_TalonSRX Lift;
+    private WPI_VictorSPX Intake;
+    private WPI_TalonSRX Lift;
 
     //private AHRS gyro = new AHRS();
 
