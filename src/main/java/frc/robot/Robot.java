@@ -7,12 +7,25 @@
 
 package frc.robot;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystem.DriveBase;
+import frc.robot.autoarmsubsystems.ArmUp;
+import frc.robot.autodrivesubsystems.DriveStop;
+import frc.robot.autodrivesubsystems.lowvelocity.*;
+import frc.robot.autodrivesubsystems.mediumvelocity.*;
+import frc.robot.autodrivesubsystems.highvelocity.*;
+
+import frc.robot.subsystems.Constants;
+import frc.robot.subsystems.DriveBase;
+import frc.robot.autodrivesubsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,26 +35,53 @@ import frc.robot.subsystem.DriveBase;
  * project.
  */
 public class Robot extends TimedRobot {
-  
+
+  // Controller:
   public static XboxController controller = new XboxController(0);
-  public static final GenericHID.Hand left = GenericHID.Hand.kLeft; 
+  public static final GenericHID.Hand left = GenericHID.Hand.kLeft;
   public static final GenericHID.Hand right = GenericHID.Hand.kRight;
 
-  public static DriveBase base = new DriveBase(1, 2, 3, 4);
+  
+  //------------------------------------------------------------------------------------------------------------
+  // Auto (Custom):
+    // Forward:
+  public LowDriveForward autonomousLowDriveForward = new LowDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
+  public MediumDriveForward autonomousMediumDriveForward = new MediumDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
+  public HighDriveForward autonomousHighDriveForward = new HighDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
 
+    // Backwards:
+  public LowDriveBackwards autonomousLowDriveBackwards = new LowDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
+  public MediumDriveBackwards autonomousMediumDriveBackwards = new MediumDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
+  public HighDriveBackwards autonomousHighDriveBackwards = new HighDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
 
+    // Turn Left:
+  public LowTurnLeft autonomousLowTurnLeft = new LowTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
+  public MediumTurnLeft autonomousMediumTurnLeft = new MediumTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
+  public HighTurnLeft autonomousHighTurnLeft = new HighTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
 
+    // Turn Right:
+  public LowTurnRight autonomousLowTurnRight = new LowTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
+  public MediumTurnRight autonomousMediumTurnRight = new MediumTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
+  public HighTurnRight autonomousHighTurnRight = new HighTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
+
+  public DriveStop autonomousDriveStop = new DriveStop(Constants.Robot.nulltarget); // "0" is a target for DriveBackwards.
+
+  public ArmUp autonomousArmUp = new ArmUp();
+  // Auto (Default):
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+
+  public static DriveBase base = new DriveBase(1, 2, 3, 4);
+  //------------------------------------------------------------------------------------------------------------
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
+    getDriveBaseInstance().initialize();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -70,68 +110,256 @@ public class Robot extends TimedRobot {
    * the switch structure below with additional strings. If using the
    * SendableChooser make sure to add them to the chooser code above as well.
    */
-  @Override
-  public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+
+  @Override 
+  public void autonomousInit() {    
+      getDriveBaseInstance().initialize();
+      getDriveBaseInstance().reset();
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
+  double power;
+  double timeInMillis;
+    
+/*
+  private void DriveStraightForDistance(double power, double timeInMillis) {
+    this.power = power;
+    this.timeInMillis = timeInMillis; 
+  }
+*/
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+      Timer Timer = new Timer();
+      Timer.start();
+    /* 
+
+    // Jank Demonstration:
+      autonomousMediumDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(1.5);
+      autonomousMediumDriveBackwards.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+
+      autonomousLowDriveForward.start();
+      edu.wpi.first.wpilibj.Timer.delay(1.5);
+      autonomousLowDriveForward.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+
+      autonomousLowDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(1.5);
+      autonomousLowDriveBackwards.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+
+      autonomousMediumDriveForward.start();
+      edu.wpi.first.wpilibj.Timer.delay(1.5);
+      autonomousMediumDriveForward.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+      
+      autonomousMediumDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(1);
+      autonomousMediumDriveBackwards.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+
+      autonomousHighDriveForward.start();
+      edu.wpi.first.wpilibj.Timer.delay(1.5);
+      autonomousHighDriveForward.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+      
+      autonomousHighDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(1);
+      autonomousHighDriveBackwards.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(1000);
+      autonomousDriveStop.isComplete();
+
+    // End of Jank Demonstration
+
+    */ 
+      //Timer Timer = new Timer();
+      //Timer.start();
+
+      //double power = 0.5;
+      //double timeInMillis = 2;
+      //DriveStraightForDistance(power, timeInMillis);   
+      
+      
+
+      //System.out.println("Timer Started!");
+      //edu.wpi.first.wpilibj.Timer.delay(1);
+      /*
+      autonomousArmUp.start();
+      edu.wpi.first.wpilibj.Timer.delay(1);
+      autonomousArmUp.isComplete();
+      */
+      //System.out.print("DriveForward Starting!");
+
+      /*
+      autonomousMediumDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(1.5);
+      autonomousMediumDriveBackwards.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(0.001);
+      autonomousDriveStop.isComplete();
+
+      autonomousMediumDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(1.5);
+      autonomousMediumDriveBackwards.isComplete();
+
+      /*
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(100);
+      autonomousDriveStop.isComplete();
+
+      autonomousMediumDriveForward.start();
+      edu.wpi.first.wpilibj.Timer.delay(5);
+      autonomousMediumDriveForward.isComplete();
+
+      //System.out.print("DriveStop Starting!");
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+
+      autonomousMediumDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(5);
+      autonomousMediumDriveBackwards.isComplete();
+
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(100);
+      autonomousDriveStop.isComplete();
+      /*
+      autonomousDriveTurnLeft.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveTurnLeft.isComplete();
+
+      
+      //Drive Forward (For 2 Seconds)
+      autonomousDriveForward.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveForward.isComplete();
+
+      //Drive Stop (For 2 Seconds)
+      autonomousDriveStop.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveStop.isComplete();
+
+      //Drive Backwards (For 2 Seconds)
+      autonomousDriveBackwards.start();
+      edu.wpi.first.wpilibj.Timer.delay(2);
+      autonomousDriveBackwards.start();
+
+      //Drive Stop
+      autonomousDriveStop.start();
+      autonomousDriveStop.isComplete();
+      */
   }
 
-  /**
-   * This function is called once when teleop is enabled.
-   */
+  private Object Success() {
+    System.out.println("Success!");
+    return null;
+  }
+
   @Override
   public void teleopInit() {
+    getDriveBaseInstance().initialize();
+    getDriveBaseInstance().reset();  
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
+
   @Override
   public void teleopPeriodic() {
+    test();
+    armAndIntake();
+    reseter(); 
+    drive();
+
   }
 
-  /**
-   * This function is called once when the robot is disabled.
-   */
+  private void armAndIntake() {
+    getDriveBaseInstance().armSystem(controller, left, right);
+
+  }
+
+  public CANEncoder leftfrontencoder;
+  public CANEncoder leftrearencoder;
+  public CANEncoder rightfrontencoder;
+  public CANEncoder rightrearencoder;
+  
+  public double leftsideencoders() {
+    double leftsideencoders;
+    return leftsideencoders = ((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
+  }
+
+
+  private void test() {
+    //CANSparkMax leftfrontmotorTest = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+    leftfrontencoder = getDriveBaseInstance().leftfrontmotor.getEncoder();    
+    leftrearencoder = getDriveBaseInstance().leftrearmotor.getEncoder();    
+    rightfrontencoder = getDriveBaseInstance().rightfrontmotor.getEncoder();    
+    rightrearencoder = getDriveBaseInstance().rightrearmotor.getEncoder();    
+
+    
+
+    //System.out.print("After leftfrontencoder instantiate ------------------------------------------------------------------------------")
+    System.out.println("LeftFrontEncoder --> " + leftfrontencoder.getPosition());
+    System.out.println("LeftRearencoder --> " + leftrearencoder.getPosition());
+    System.out.println("RightFrontEncoder --> " + rightfrontencoder.getPosition());
+    System.out.println("RighRearEncoder --> " + rightrearencoder.getPosition());
+    System.out.println("");
+
+    System.out.println("Entire Left Side" + leftsideencoders());
+
+
+
+
+    //leftfrontencoder = leftfrontmotor.getEncoder();
+    //System.out.println("Encoder Position" + leftfrontencoder.getPosition());
+    //SmartDashboard.putNumber("Encoder Position", leftfrontencoder.getPosition());
+  }
+
+  public void drive() {
+    getDriveBaseInstance().arcadeDrive(controller, left, right);
+  }
+  
   @Override
   public void disabledInit() {
   }
 
-  /**
-   * This function is called periodically when disabled.
-   */
   @Override
   public void disabledPeriodic() {
   }
 
-  /**
-   * This function is called once when test mode is enabled.
-   */
   @Override
   public void testInit() {
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
   @Override
   public void testPeriodic() {
   }
+
+  public void reseter() {
+  }
+
+  public DriveBase getDriveBaseInstance() {
+    return new DriveBase(1, 2, 3, 4);
+  }
+
 }
