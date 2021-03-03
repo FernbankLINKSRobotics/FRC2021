@@ -1,30 +1,19 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-// import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 public class DriveBase implements DriveAction {
 
-    //------------------------------------------------------------------------------------------------------------
-    // - DriveBase Variables - 
-    
-    // Tunes/Drivebase (Motors):
     public CANSparkMax leftfrontmotor, leftrearmotor, rightfrontmotor, rightrearmotor; 
-
-    // private AHRS gyro = new AHRS();
 
     private final double pTurn = 0.005;
     private final double iTurn = 0;
@@ -39,18 +28,13 @@ public class DriveBase implements DriveAction {
     private PIDController ballTurnController = new PIDController(pTurn, iTurn, dTurn);
     private PIDController ballDriveController = new PIDController(pDrive, iDrive, dDrive);
     
-
-
     // - Arm & Intake Variables - 
     private WPI_TalonSRX Arm = new WPI_TalonSRX(5);
     private WPI_VictorSPX Mouth = new WPI_VictorSPX(6);
 
     // - Xbox Controllers - 
     public static XboxController controller = new XboxController(0);
-    //public static XboxController controller = new XboxController(1);
-
-    
-
+  
     public DriveBase(int leftfrontmotorPort, int leftrearmotorPort, int rightfrontmotorPort, int rightrearmotorPort) {
         this.leftfrontmotor = new CANSparkMax(leftfrontmotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
         this.leftrearmotor = new CANSparkMax(leftrearmotorPort, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -183,38 +167,8 @@ public class DriveBase implements DriveAction {
         if (controller.getYButtonReleased()) {
             Mouth.set(zeroVelocity);
         }
-
-        // Deemed Unsafe:
-        /*
-        if (controller.getBumper(left)) {
-            Timer timer = new Timer();
-            timer.start();
-            Mouth.set(0);
-            Arm.set(0);
-            Timer.delay(5); // Five second time out.
-
-        }
-        */
-        /*
-        if (controller.getBumper(right)) {
-            Timer Timer = new Timer();
-            Timer.start();  
-            Arm.set(-.3);
-            edu.wpi.first.wpilibj.Timer.delay(.75);
-            Arm.set(0);
-        }
-        */
-        /*
-        if (controller.getBumper(right)) {
-            Timer Timer = new Timer();
-            Timer.start();
-            Arm.set(-.5);
-            edu.wpi.first.wpilibj.Timer.delay(.25);
-            Arm.set(0);
-        */
-        }
+    }
     
-
 //------------------------------------------------------------------------------------------------------------
 // NEOSpark Max Encoder Logic Objects:
 
@@ -250,7 +204,7 @@ public class DriveBase implements DriveAction {
 // Auto Drive Objects (These are hardcoded, likely to removed soon!):
 
     public boolean driveOnTarget() {
-        return driveController.atSetpoint();
+        return driveController.atSetpoint(); 
     }
 
     double setpoint = 1;  // Setpoint for Auto.
@@ -259,10 +213,8 @@ public class DriveBase implements DriveAction {
     }
 
     public void driveStop() {
-
         leftfrontmotor.set(0);
         leftrearmotor.set(0);
-
         rightfrontmotor.set(0);
         rightrearmotor.set(0);
     }
@@ -290,6 +242,5 @@ public class DriveBase implements DriveAction {
         SmartDashboard.putNumber("Left Drive Train Velocity: ", getLeftVelocity());
         SmartDashboard.putNumber("Right Drive Train Velocity: ", getRightVelocity());
         SmartDashboard.putNumber("Average Velocity: ", getAverageVelocity());
-
     }
 }

@@ -8,22 +8,13 @@
 package frc.robot;
 
 import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.autoarmsubsystems.ArmUp;
-import frc.robot.autodrivesubsystems.DriveStop;
-
-
 import frc.robot.subsystems.Constants;
 import frc.robot.subsystems.DriveBase;
-import frc.robot.autodrivesubsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -54,6 +45,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    System.out.println("Robot Initializing");
     getDriveBaseInstance().initialize();
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
@@ -70,6 +62,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    System.out.println("Robot in Periodic");
   }
 
   /**
@@ -85,35 +78,28 @@ public class Robot extends TimedRobot {
    */
 
   @Override 
-  public void autonomousInit() {    
+  public void autonomousInit() {
+    System.out.println("Autonomous Initializing");    
       getDriveBaseInstance().initialize();
       getDriveBaseInstance().reset();
-  }
+  }    
 
-  double power;
-  double timeInMillis;
-    
-/*
-  private void DriveStraightForDistance(double power, double timeInMillis) {
-    this.power = power;
-    this.timeInMillis = timeInMillis; 
-  }
-*/
   @Override
   public void autonomousPeriodic() {
-      Timer Timer = new Timer();
-      Timer.start();
+    System.out.println("Autonomous Periodic");
   }
 
   @Override
   public void teleopInit() {
+    System.out.println("Teleop Initializing");
     getDriveBaseInstance().initialize();
     getDriveBaseInstance().reset();  
   }
 
   @Override
   public void teleopPeriodic() {
-    test();
+    System.out.println("Robot in Teleop");
+    encoderTests();
     armAndIntake();
     reseter(); 
     drive();
@@ -121,45 +107,92 @@ public class Robot extends TimedRobot {
 
   private void armAndIntake() {
     getDriveBaseInstance().armSystem(controller, left, right);
-
   }
 
+  //------------------------------------------------------------------------------------------------------------
+  // Encoders:
   public CANEncoder leftfrontencoder;
   public CANEncoder leftrearencoder;
   public CANEncoder rightfrontencoder;
   public CANEncoder rightrearencoder;
   
-  public double leftsideencoders() {
+  public double leftsideencoderPosition() {
     double leftsideencoders;
     return leftsideencoders = ((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
   }
 
+  public double rightsideencoderPosition() {
+    double rightsideencoders;
+    return rightsideencoders = ((rightfrontencoder.getPosition() + rightrearencoder.getPosition()) / 2);
+  }
 
-  private void test() {
-    //CANSparkMax leftfrontmotorTest = new CANSparkMax(1, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public double leftsideDistance() {
+    double leftsidedistance;
+    return leftsidedistance = ((leftsideencoderPosition() / Constants.Robot.Encoders.ticksperrotation) * Constants.Robot.Encoders.wheeldiameter);
+  }
+
+  public double rightsideDistance() {
+    double rightsidedistance;
+    return rightsidedistance = ((rightsideencoderPosition() / Constants.Robot.Encoders.ticksperrotation) * Constants.Robot.Encoders.wheeldiameter);
+  }
+
+  public double averageDistance() {
+    double averagedistance;
+    return averagedistance = ((leftsideDistance() + rightsideDistance()) / 2);
+  }
+
+  private void encoderTests() {
     leftfrontencoder = getDriveBaseInstance().leftfrontmotor.getEncoder();    
     leftrearencoder = getDriveBaseInstance().leftrearmotor.getEncoder();    
     rightfrontencoder = getDriveBaseInstance().rightfrontmotor.getEncoder();    
-    rightrearencoder = getDriveBaseInstance().rightrearmotor.getEncoder();    
+    rightrearencoder = getDriveBaseInstance().rightrearmotor.getEncoder();
 
-    
-
-    //System.out.print("After leftfrontencoder instantiate ------------------------------------------------------------------------------")
     System.out.println("LeftFrontEncoder --> " + leftfrontencoder.getPosition());
     System.out.println("LeftRearencoder --> " + leftrearencoder.getPosition());
     System.out.println("RightFrontEncoder --> " + rightfrontencoder.getPosition());
     System.out.println("RighRearEncoder --> " + rightrearencoder.getPosition());
     System.out.println("");
-
-    System.out.println("Entire Left Side" + leftsideencoders());
-
-
-
-
-    //leftfrontencoder = leftfrontmotor.getEncoder();
-    //System.out.println("Encoder Position" + leftfrontencoder.getPosition());
-    //SmartDashboard.putNumber("Encoder Position", leftfrontencoder.getPosition());
+    System.out.println("Entire Left Side" + leftsideencoderPosition());
+    System.out.println("Entire Right Side" + rightsideencoderPosition());
+    System.out.println("");
   }
+
+  // Reinitializing DriveBase once to then refer to later:
+  public DriveBase getDriveBaseInstance() {
+    return new DriveBase(1, 2, 3, 4);
+  }
+
+  public void driveStraight() {
+    // !!! None of this is actually included in AutoInit or AutoPeriodic !!!
+    while ((rightsideDistance() > (leftsideDistance() -100)) || (rightsideDistance() < (leftsideDistance() + 100))) {
+      if ((rightsideDistance() > 0) || (leftsideDistance() > 0)){
+        double throttle = Constants.DriveBase.Encoders.testingthrottle;
+        getDriveBaseInstance().leftfrontmotor.set(-throttle);
+        getDriveBaseInstance().leftrearmotor.set(-throttle);
+
+        getDriveBaseInstance().rightfrontmotor.set(throttle);
+        getDriveBaseInstance().rightrearmotor.set(throttle);
+          
+        if ((rightsideDistance() > 720) || (leftsideDistance() > 720)) {
+          double nullthrottle = Constants.DriveBase.Encoders.nullthrottle;
+          getDriveBaseInstance().leftfrontmotor.set(nullthrottle);
+          getDriveBaseInstance().leftrearmotor.set(nullthrottle);
+    
+          getDriveBaseInstance().rightfrontmotor.set(nullthrottle);
+          getDriveBaseInstance().rightrearmotor.set(nullthrottle);
+        }
+      }
+      if (((rightsideDistance() > 0) || (leftsideDistance() > 0 )) || ((rightsideDistance() > 720) || (leftsideDistance() > 720))) {
+        double throttle = Constants.DriveBase.Encoders.nullthrottle;
+        getDriveBaseInstance().leftfrontmotor.set(throttle);
+        getDriveBaseInstance().leftrearmotor.set(throttle);
+  
+        getDriveBaseInstance().rightfrontmotor.set(throttle);
+        getDriveBaseInstance().rightrearmotor.set(throttle);
+      }
+    }
+  }
+  //------------------------------------------------------------------------------------------------------------
 
   public void drive() {
     getDriveBaseInstance().arcadeDrive(controller, left, right);
@@ -183,9 +216,4 @@ public class Robot extends TimedRobot {
 
   public void reseter() {
   }
-
-  public DriveBase getDriveBaseInstance() {
-    return new DriveBase(1, 2, 3, 4);
-  }
-
 }

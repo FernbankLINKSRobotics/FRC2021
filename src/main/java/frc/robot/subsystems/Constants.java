@@ -5,6 +5,8 @@ public class Constants {
         public class Encoders {
             public static final double encoderconversion = 34.19;  // Preset Value
             public static final double zero = 0;
+            public static final double testingthrottle = 0.5; // Subject to change.
+            public static final double nullthrottle = 0;
         }
 
         public class Controllers {
@@ -35,6 +37,7 @@ public class Constants {
         public static final double nulltarget = 0;
         public class Encoders {
             public static final double wheeldiameter = 6; // 6 inches.
+            public static final double ticksperrotation = 360; // Where ticks are the unit of measurement output by SparkMax Encoders.
         }
     }
 
