@@ -19,9 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.autoarmsubsystems.ArmUp;
 import frc.robot.autodrivesubsystems.DriveStop;
-import frc.robot.autodrivesubsystems.lowvelocity.*;
-import frc.robot.autodrivesubsystems.mediumvelocity.*;
-import frc.robot.autodrivesubsystems.highvelocity.*;
+
 
 import frc.robot.subsystems.Constants;
 import frc.robot.subsystems.DriveBase;
@@ -43,30 +41,6 @@ public class Robot extends TimedRobot {
 
   
   //------------------------------------------------------------------------------------------------------------
-  // Auto (Custom):
-    // Forward:
-  public LowDriveForward autonomousLowDriveForward = new LowDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
-  public MediumDriveForward autonomousMediumDriveForward = new MediumDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
-  public HighDriveForward autonomousHighDriveForward = new HighDriveForward(Constants.Robot.target);  // "2" is a target for DriveForward.
-
-    // Backwards:
-  public LowDriveBackwards autonomousLowDriveBackwards = new LowDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
-  public MediumDriveBackwards autonomousMediumDriveBackwards = new MediumDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
-  public HighDriveBackwards autonomousHighDriveBackwards = new HighDriveBackwards(Constants.Robot.target); // "2" is a target for DriveBackwards.
-
-    // Turn Left:
-  public LowTurnLeft autonomousLowTurnLeft = new LowTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
-  public MediumTurnLeft autonomousMediumTurnLeft = new MediumTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
-  public HighTurnLeft autonomousHighTurnLeft = new HighTurnLeft(Constants.Robot.target); // "0" is a target for DriveTurnLeft.
-
-    // Turn Right:
-  public LowTurnRight autonomousLowTurnRight = new LowTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
-  public MediumTurnRight autonomousMediumTurnRight = new MediumTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
-  public HighTurnRight autonomousHighTurnRight = new HighTurnRight(Constants.Robot.target); // "0" is a target for DriveTurnRight.
-
-  public DriveStop autonomousDriveStop = new DriveStop(Constants.Robot.nulltarget); // "0" is a target for DriveBackwards.
-
-  public ArmUp autonomousArmUp = new ArmUp();
   // Auto (Default):
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
