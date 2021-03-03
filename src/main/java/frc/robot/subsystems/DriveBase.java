@@ -247,7 +247,7 @@ public class DriveBase implements DriveAction {
     }
 
 //------------------------------------------------------------------------------------------------------------
-// Auto Drive Objects:
+// Auto Drive Objects (These are hardcoded, likely to removed soon!):
 
     public boolean driveOnTarget() {
         return driveController.atSetpoint();
@@ -258,56 +258,6 @@ public class DriveBase implements DriveAction {
         //double setpoint = new setpoint(1.0);
     }
 
-    public void forwardDrive() {
-        double throttle = driveController.calculate(getLeftPosition());
-
-        leftfrontmotor.set(-throttle);  
-        leftrearmotor.set(-throttle);   
-
-        rightfrontmotor.set(throttle);
-        rightrearmotor.set(throttle);
-    }
-
-    public void driveForward() {
-        double throttle = driveController.calculate(getLeftPosition());
-
-        leftfrontmotor.set(-throttle);
-        leftrearmotor.set(-throttle);
-
-        rightfrontmotor.set(throttle);
-        rightrearmotor.set(throttle);
-    }
-    
-    public void driveBackwards() {
-        double throttle = driveController.calculate(getLeftPosition());
-
-        leftfrontmotor.set(throttle);
-        leftrearmotor.set(throttle);
-
-        rightfrontmotor.set(-throttle);
-        rightrearmotor.set(-throttle);
-    }
-    
-    public void driveTurnLeft() {
-        double throttle = driveController.calculate(getLeftPosition());
-
-        leftfrontmotor.set(throttle);
-        leftrearmotor.set(throttle);
-
-        rightfrontmotor.set(throttle);
-        rightrearmotor.set(throttle);
-    }
-
-    public void driveTurnRight() {
-        double throttle = driveController.calculate(getLeftPosition());
-
-        leftfrontmotor.set(-throttle);
-        leftrearmotor.set(-throttle);
-
-        rightfrontmotor.set(-throttle);
-        rightrearmotor.set(-throttle);
-    }
-
     public void driveStop() {
 
         leftfrontmotor.set(0);
@@ -316,14 +266,6 @@ public class DriveBase implements DriveAction {
         rightfrontmotor.set(0);
         rightrearmotor.set(0);
     }
-
-//------------------------------------------------------------------------------------------------------------
-// Auto Arm Objects:
-
-public void armUp() {
-    double targetVelocity = -.3;
-    Arm.set(targetVelocity);
-}
 
 //------------------------------------------------------------------------------------------------------------
 

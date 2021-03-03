@@ -33,6 +33,9 @@ public class Constants {
     public class Robot {  // File Robot.java
         public static final double target = 2;
         public static final double nulltarget = 0;
+        public class Encoders {
+            public static final double wheeldiameter = 6; // 6 inches.
+        }
     }
 
     public class Autonomous {  // All files with folders autoarmsubsystems and autodrivesubsystems

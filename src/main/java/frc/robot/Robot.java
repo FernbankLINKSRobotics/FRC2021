@@ -46,7 +46,6 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-
   public static DriveBase base = new DriveBase(1, 2, 3, 4);
   //------------------------------------------------------------------------------------------------------------
   /**
@@ -104,151 +103,6 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
       Timer Timer = new Timer();
       Timer.start();
-    /* 
-
-    // Jank Demonstration:
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousLowDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousLowDriveForward.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousLowDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousLowDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveForward.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-      
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousHighDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousHighDriveForward.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-      
-      autonomousHighDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1);
-      autonomousHighDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(1000);
-      autonomousDriveStop.isComplete();
-
-    // End of Jank Demonstration
-
-    */ 
-      //Timer Timer = new Timer();
-      //Timer.start();
-
-      //double power = 0.5;
-      //double timeInMillis = 2;
-      //DriveStraightForDistance(power, timeInMillis);   
-      
-      
-
-      //System.out.println("Timer Started!");
-      //edu.wpi.first.wpilibj.Timer.delay(1);
-      /*
-      autonomousArmUp.start();
-      edu.wpi.first.wpilibj.Timer.delay(1);
-      autonomousArmUp.isComplete();
-      */
-      //System.out.print("DriveForward Starting!");
-
-      /*
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(0.001);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(1.5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      /*
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(100);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(5);
-      autonomousMediumDriveForward.isComplete();
-
-      //System.out.print("DriveStop Starting!");
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      autonomousMediumDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(5);
-      autonomousMediumDriveBackwards.isComplete();
-
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(100);
-      autonomousDriveStop.isComplete();
-      /*
-      autonomousDriveTurnLeft.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveTurnLeft.isComplete();
-
-      
-      //Drive Forward (For 2 Seconds)
-      autonomousDriveForward.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveForward.isComplete();
-
-      //Drive Stop (For 2 Seconds)
-      autonomousDriveStop.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveStop.isComplete();
-
-      //Drive Backwards (For 2 Seconds)
-      autonomousDriveBackwards.start();
-      edu.wpi.first.wpilibj.Timer.delay(2);
-      autonomousDriveBackwards.start();
-
-      //Drive Stop
-      autonomousDriveStop.start();
-      autonomousDriveStop.isComplete();
-      */
-  }
-
-  private Object Success() {
-    System.out.println("Success!");
-    return null;
   }
 
   @Override
@@ -257,14 +111,12 @@ public class Robot extends TimedRobot {
     getDriveBaseInstance().reset();  
   }
 
-
   @Override
   public void teleopPeriodic() {
     test();
     armAndIntake();
     reseter(); 
     drive();
-
   }
 
   private void armAndIntake() {
