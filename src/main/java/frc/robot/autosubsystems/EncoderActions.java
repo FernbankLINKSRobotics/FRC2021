@@ -2,6 +2,7 @@ package frc.robot.autosubsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+
 import frc.robot.subsystems.Constants;
 
 public class EncoderActions {
