@@ -96,19 +96,16 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {    
       base.initialize();
       base.reset();
-      // starting point of your route
-      EncoderActions.forwardDrive(1);
-      EncoderActions.backwardDrive(1);
   }
 
   @Override
   public void autonomousPeriodic() {
     //EncoderValues.encoderReading();
     //EncoderActions.forwardDrive(1);
-
-    //EncoderActions.forwardDrive(1);
-    //EncoderActions.backwardDrive(1); 
+    EncoderActions.forwardDrive(1);
+    EncoderActions.getDistance();
     //EncoderActions.clockwiseTurn(90);
+    //EncoderActions.getEncoderReset();
     //EncoderActions.forwardDrive(2);    
   }
 

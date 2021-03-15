@@ -19,17 +19,6 @@ public class EncoderActions {
     public CANEncoder rightfrontencoder;
     public CANEncoder rightrearencoder;
 
-    // flag
-    boolean forwardFlag;
-    boolean backwardFlag;
-
-    // carry out the positions
-    double rightfrontencoderPositionForward;
-    double leftfrontencoderPositionForward;
-
-    double rightfrontencoderPositionBackward;
-    double leftfrontencoderPositionBackward;
-
     /*------------------------------------------------------------------------------------------------------*/
     // Math Objects:
     public double leftsideencoderPosition() {
@@ -69,138 +58,83 @@ public class EncoderActions {
         this.leftrearencoder = DriveBase().leftrearmotor.getEncoder();    
         this.rightfrontencoder = DriveBase().rightfrontmotor.getEncoder();    
         this.rightrearencoder = DriveBase().rightrearmotor.getEncoder();
-
-        this.rightfrontencoderPositionForward = this.rightfrontencoder.getPosition();
-        this.leftfrontencoderPositionForward = this.leftfrontencoder.getPosition();
-
-        this.leftfrontencoderPositionBackward = 0;
-        this.rightfrontencoderPositionBackward = 0;
-
-        this.forwardFlag = true;
-        this.backwardFlag = false;
     }
 
     public void forwardDrive(double Distance) {
-        //while (Distance == Distance) {
-            System.out.println("FORWARDDRIVE!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println("init left front encoder position : " + leftfrontencoder.getPosition());
-            System.out.println("init right front encoder position : " + rightfrontencoder.getPosition());
-            System.out.println("init left front position : " + this.leftfrontencoderPositionForward);
-            System.out.println("init right front position : " + this.rightfrontencoderPositionForward);
-            // start
-            
-        //if(forwardFlag) {
-            // start
-            //if (rightfrontencoder.getPosition() == 0 || leftfrontencoder.getPosition() == 0) {
+        while (Distance == Distance) {
+            encoderSpark();
+            if (rightfrontencoder.getPosition() == 0.01 || leftfrontencoder.getPosition() == 0.01) {
                 leftfrontmotor.set(-0.1);
                 leftrearmotor.set(-0.1);
                 rightfrontmotor.set(0.1);
                 rightrearmotor.set(0.1);
                 getDistance();
-            //}
-            // wait
-            while (rightfrontencoder.getPosition() < (Distance * 576.3156) && leftfrontencoder.getPosition() < (Distance * 576.3156)) {
-                //getEncoderReset();
-                getDistance();
-                backwardFlag = true;
-                forwardFlag = false;
-                //assignFrontPosition(leftfrontencoder.getPosition(), rightfrontencoder.getPosition());
             }
-
-            //stop
-            leftfrontmotor.set(0);
-            leftrearmotor.set(0);
-            rightfrontmotor.set(0);
-            rightrearmotor.set(0);
-            //backwardDrive(1);
-        //}
-            
-        //}
+            if ((rightfrontencoder.getPosition() > (Distance * 576.3156) || leftfrontencoder.getPosition() > (Distance * 576.3156)) || 
+                                  (rightfrontencoder.getPosition() != 0) || leftfrontencoder.getPosition() != 0)  {
+                leftfrontmotor.set(0);
+                leftrearmotor.set(0);
+                rightfrontmotor.set(0);
+                rightrearmotor.set(0);
+                getEncoderReset();
+                getDistance();
+            }
+        }
     }
 
     public void backwardDrive(double Distance) {
         // Values inputted into double Distance is equivalent to feet.
 
-        System.out.println("BACKWARD--------------------------");
-       // System.out.println("carry out left front position : " + this.leftfrontencoderPosition);
-        //System.out.println("carry out right front position : " + this.rightfrontencoderPosition);
-        //System.out.println("carry out left front encoder position encoder : " + leftfrontencoder.getPosition());
-        //System.out.println("carry out right front encoder position encoder : " + rightfrontencoder.getPosition());
-        
-        //getEncoderReset();
-        //while (Distance == Distance) {
-            //encoderSpark();
-        //if(backwardFlag) {
-            //if (rightfrontencoder.getPosition() == 0 || leftfrontencoder.getPosition() == 0) {
-                // start
+        while (Distance == Distance) {
+            encoderSpark();
+            if (rightfrontencoder.getPosition() == 0.01 || leftfrontencoder.getPosition() == 0.01) {
                 leftfrontmotor.set(0.1);
                 leftrearmotor.set(0.1);
                 rightfrontmotor.set(-0.1);
                 rightrearmotor.set(-0.1);
-                System.out.println("BACKWARD--------------------------DONE!!!!!!");
-
                 getDistance();
-            //}
-            // wait
-            /*while (rightfrontencoder.getPosition() > (Distance * -576.3156) && leftfrontencoder.getPosition() > (Distance * -576.3156)) {
-                
-                //getEncoderReset();
+            }
+            if ((rightfrontencoder.getPosition() < (Distance * -576.3156) || leftfrontencoder.getPosition() < (Distance * -576.3156)) || 
+                                    (rightfrontencoder.getPosition() != 0 || leftfrontencoder.getPosition() != 0)) {
+                leftfrontmotor.set(0);
+                leftrearmotor.set(0);
+                rightfrontmotor.set(0);
+                rightrearmotor.set(0);
+                getEncoderReset();
                 getDistance();
-                backwardFlag = false;
-                forwardFlag = true;
-                //assignFrontPosition(leftfrontencoder.getPosition(), rightfrontencoder.getPosition());
-
-            }*/
-
-            //stop
-            //leftfrontmotor.set(0);
-            //leftrearmotor.set(0);
-            //rightfrontmotor.set(0);
-            //rightrearmotor.set(0);
-        //}
-        //}
+            }
+        }
     }
 
     public void clockwiseTurn(double Degree) {
         // Values inputted into double Degrees should be divisible by 90.
 
-        //encoderSpark();
-        //System.out.println("carry out left front position : " + this.leftfrontencoderPosition);
-        //System.out.println("carry out right front position : " + this.rightfrontencoderPosition);
-        System.out.println("carry out left front encoder position encoder : " + leftfrontencoder.getPosition());
-        System.out.println("carry out right front encoder position encoder : " + rightfrontencoder.getPosition());
-        //while (Degree == Degree ) {
-            //getEncoderReset();
-            // start
-            //if (rightfrontencoder.getPosition() == 0 || leftfrontencoder.getPosition() == 0) {
+        encoderSpark();
+        while (Degree == Degree ) {
+            if (rightfrontencoder.getPosition() == 0.01 || leftfrontencoder.getPosition() == 0.01) {
                 leftfrontmotor.set(-0.1);
                 leftrearmotor.set(-0.1);
                 rightfrontmotor.set(-0.1);
                 rightrearmotor.set(-0.1);
                 getDistance();
-            //}
-            //wait
-            // while condition ???? 
-            while (rightfrontencoder.getPosition() < ((Degree / 90) * -340) || leftfrontencoder.getPosition() < ((Degree / 90) * -340)) { 
-                
-                //getEncoderReset();
-                assignFrontPosition(leftfrontencoder.getPosition(), rightfrontencoder.getPosition());
-                getDistance();
             }
-
-            // stop
-            leftfrontmotor.set(0);
+            if ((rightfrontencoder.getPosition() < ((Degree / 90) * -340) || leftfrontencoder.getPosition() < ((Degree / 90) * -340)) || 
+                                     (leftfrontencoder.getPosition() != 0 || rightfrontencoder.getPosition() != 0 )) {
+                leftfrontmotor.set(0);
                 leftrearmotor.set(0);
                 rightfrontmotor.set(0);
                 rightrearmotor.set(0);
-        //}
+                getEncoderReset();
+                getDistance();
+            }
+        }
     }
 
     public void counterclockwiseTurn(double Degree) {
         //  Values inputted into double Degrees should be divisible by 90.
 
         while (Degree == Degree) {
-            if (rightfrontencoder.getPosition() == Math.abs(0.1) || leftfrontencoder.getPosition() == Math.abs(0.1)) {
+            if ((rightfrontencoder.getPosition() < ((Degree / 90) * 340) || leftfrontencoder.getPosition() < ((Degree / 90) * 340))) {
                 leftfrontmotor.set(0.1);
                 leftrearmotor.set(0.1);
                 rightfrontmotor.set(0.1);
@@ -240,14 +174,9 @@ public class EncoderActions {
     }
 
     public void encoderSpark() {
-        leftfrontencoder.setPosition(0.1);
-        leftrearencoder.setPosition(0.1);
-        rightfrontencoder.setPosition(0.1);
-        rightrearencoder.setPosition(0.1);
-    }
-
-    private void assignFrontPosition(double leftFrontPosition, double rightFrontPosition) {
-        this.rightfrontencoderPositionForward = rightFrontPosition;
-        this.leftfrontencoderPositionForward = leftFrontPosition;
+        leftfrontencoder.setPosition(0.01);
+        leftrearencoder.setPosition(0.01);
+        rightfrontencoder.setPosition(0.01);
+        rightrearencoder.setPosition(0.01);
     }
 }
