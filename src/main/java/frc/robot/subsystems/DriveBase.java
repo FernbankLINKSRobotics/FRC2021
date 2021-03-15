@@ -9,28 +9,27 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 
 public class DriveBase implements DriveAction {
 
     public CANSparkMax leftfrontmotor, leftrearmotor, rightfrontmotor, rightrearmotor; 
 
-    private final double pTurn = 0.005;
-    private final double iTurn = 0;
-    private final double dTurn = 0;
+    public final double pTurn = 0.005;
+    public final double iTurn = 0;
+    public final double dTurn = 0;
 
-    private final double pDrive = 0.016;
-    private final double iDrive = 0;
-    private final double dDrive = 0;
+    public final double pDrive = 0.016;
+    public final double iDrive = 0;
+    public final double dDrive = 0;
 
-    private PIDController turnController = new PIDController(pTurn, iTurn, dTurn);
-    private PIDController driveController = new PIDController(pDrive, iDrive, dDrive);
-    private PIDController ballTurnController = new PIDController(pTurn, iTurn, dTurn);
-    private PIDController ballDriveController = new PIDController(pDrive, iDrive, dDrive);
+    public PIDController turnController = new PIDController(pTurn, iTurn, dTurn);
+    public PIDController driveController = new PIDController(pDrive, iDrive, dDrive);
+    public PIDController ballTurnController = new PIDController(pTurn, iTurn, dTurn);
+    public PIDController ballDriveController = new PIDController(pDrive, iDrive, dDrive);
     
     // - Arm & Intake Variables - 
-    private WPI_TalonSRX Arm = new WPI_TalonSRX(5);
-    private WPI_VictorSPX Mouth = new WPI_VictorSPX(6);
+    public WPI_TalonSRX Arm = new WPI_TalonSRX(5);
+    public WPI_VictorSPX Mouth = new WPI_VictorSPX(6);
 
     // - Xbox Controllers - 
     public static XboxController controller = new XboxController(0);
@@ -43,8 +42,8 @@ public class DriveBase implements DriveAction {
     }
 
     public void initialize() {
-        // These tunes are not needed at the moment as they have been set manually (via SparkMAX software):
 
+        // !! Change Motor kType back after autonomous testing  !!
         leftfrontmotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         leftrearmotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightfrontmotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -102,8 +101,8 @@ public class DriveBase implements DriveAction {
             throttle = controller.getY(left);
         } 
 
-        if (controller.getX(right) > 0.05 || controller.getX(right) < -0.05) {
-            turn = controller.getX(right);
+        if (controller.getX(left) > 0.05 || controller.getX(left) < -0.05) {
+            turn = controller.getX(left);
             turn = -turn;
         } 
 
@@ -113,19 +112,6 @@ public class DriveBase implements DriveAction {
         rightfrontmotor.set(turn - throttle);
         rightrearmotor.set(turn - throttle);
         
-
-        // Deemed Unsafe:
-        /*
-        if (controller.getBumper(left)) {
-            Timer timer = new Timer();
-            timer.start();
-            leftfrontmotor.set(0);
-            leftrearmotor.set(0);
-            rightfrontmotor.set(0);
-            rightrearmotor.set(0);
-            Timer.delay(5); // Five second time out.
-        }
-        */
     }
 
     public void armSystem (XboxController controller, GenericHID.Hand left, GenericHID.Hand right) {

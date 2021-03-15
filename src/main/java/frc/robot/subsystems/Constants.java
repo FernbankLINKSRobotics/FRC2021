@@ -23,10 +23,12 @@ public class Constants {
         }
 
         public class Arm {
-            public static final double raisevelocity = -0.4;
-            public static final double lowervelocity = 0.25;
+            public static final double raisevelocity = -0.8;
+            public static final double lowervelocity = 0.8;
+
             public static final double intakevelocity = 0.3;
-            public static final double extakevelocity = -0.3;
+            public static final double extakevelocity = -0.2;
+
             public static final double zero = 0.0;
             public static final double holdvelocity = -0.2;
         }
@@ -36,8 +38,11 @@ public class Constants {
         public static final double target = 2;
         public static final double nulltarget = 0;
         public class Encoders {
-            public static final double wheeldiameter = 6; // 6 inches.
-            public static final double ticksperrotation = 360; // Where ticks are the unit of measurement output by SparkMax Encoders.
+            public static final double wheeldiameter = 19; // 19 inches.
+            public static final double ticksperrotation = 365; // Where ticks are the unit of measurement output by SparkMax Encoders.
+            // 363.881103515625  Is one Rotation.
+            // 242.5 Is 90 Degrees.
+            // 360 is 90 degrees
         }
     }
 
