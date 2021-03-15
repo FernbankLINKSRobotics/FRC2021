@@ -133,16 +133,13 @@ public class EncoderActions {
         //if(backwardFlag) {
             //if (rightfrontencoder.getPosition() == 0 || leftfrontencoder.getPosition() == 0) {
                 // start
-                getDistance();
-
                 leftfrontmotor.set(0.1);
                 leftrearmotor.set(0.1);
                 rightfrontmotor.set(-0.1);
                 rightrearmotor.set(-0.1);
                 System.out.println("BACKWARD--------------------------DONE!!!!!!");
+
                 getDistance();
-
-
             //}
             // wait
             /*while (rightfrontencoder.getPosition() > (Distance * -576.3156) && leftfrontencoder.getPosition() > (Distance * -576.3156)) {
