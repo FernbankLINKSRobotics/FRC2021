@@ -46,6 +46,7 @@ public class EncoderActions {
         double averagedistance;
         return averagedistance = ((leftsideDistance() + rightsideDistance()) / 2);
       }
+
     /*------------------------------------------------------------------------------------------------------*/
 
     // init
@@ -62,27 +63,25 @@ public class EncoderActions {
     }
 
     public void forwardDrive(double Distance) {
-        while (Distance == Distance) {
-            encoderSpark();
-            if (rightfrontencoder.getPosition() == 0.01 || leftfrontencoder.getPosition() == 0.01) {
-                leftfrontmotor.set(-0.1);
-                leftrearmotor.set(-0.1);
-                rightfrontmotor.set(0.1);
-                rightrearmotor.set(0.1);
-                getDistance();
-            }
-            if ((rightfrontencoder.getPosition() > (Distance * 576.3156) || leftfrontencoder.getPosition() > (Distance * 576.3156)) || 
-                                  (rightfrontencoder.getPosition() != 0) || leftfrontencoder.getPosition() != 0)  {
-                leftfrontmotor.set(0);
-                leftrearmotor.set(0);
-                rightfrontmotor.set(0);
-                rightrearmotor.set(0);
-                getEncoderReset();
-                getDistance();
+
+        leftfrontmotor.set(-0.1);
+        leftrearmotor.set(-0.1);
+        rightfrontmotor.set(0.1);
+        rightrearmotor.set(0.1);
+
+        // Snapshot of Position, recorded once before the while loop begins:
+        double leftPosition = ((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
+        double rightPosition = ((rightfrontencoder.getPosition() + rightrearencoder.getPosition()) / 2);
+        
+        while (rightfrontencoder.getPosition() > ((Distance * 576.3156) + rightPosition) ||  leftfrontencoder.getPosition() > ((Distance * 577.3156) + leftPosition)) {
+            leftfrontmotor.set(0);
+            leftrearmotor.set(0);
+            rightfrontmotor.set(0);
+            rightrearmotor.set(0); 
             }
         }
-    }
 
+        
     public void backwardDrive(double Distance) {
         // Values inputted into double Distance is equivalent to feet.
 
@@ -179,5 +178,10 @@ public class EncoderActions {
         leftrearencoder.setPosition(0.01);
         rightfrontencoder.setPosition(0.01);
         rightrearencoder.setPosition(0.01);
+    }
+
+    public void getPositionthisMoment() {
+        double leftPosition = Math.abs((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
+        double rightPosition = Math.abs((rightfrontencoder.getPosition() + rightrearencoder.getPosition()) / 2);
     }
 }
