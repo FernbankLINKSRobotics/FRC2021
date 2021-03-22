@@ -7,6 +7,7 @@ public class Constants {
             public static final double zero = 0;
             public static final double testingthrottle = 0.5; // Subject to change.
             public static final double nullthrottle = 0;
+            public static final double ticksperrotation = 576.3156;  // 2.5 feet.
         }
 
         public class Controllers {
