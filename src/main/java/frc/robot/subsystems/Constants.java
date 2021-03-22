@@ -43,6 +43,8 @@ public class Constants {
             // 363.881103515625  Is one Rotation.
             // 242.5 Is 90 Degrees.
             // 360 is 90 degrees
+            public static final double ticksper90degree = 300;
+            public static final double block = ((30/19) * 365);
         }
     }
 

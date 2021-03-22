@@ -11,9 +11,12 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.autosubsystems.AutoNav1;
+import frc.robot.autosubsystems.AutoTest;
 import frc.robot.autosubsystems.EncoderActions;
 import frc.robot.autosubsystems.EncoderValues;
 import frc.robot.subsystems.DriveBase;
@@ -42,6 +45,8 @@ public class Robot extends TimedRobot {
   public static DriveBase base = new DriveBase(1, 2, 3, 4);
 
   public EncoderActions EncoderActions;
+  //public AutoTest AutoTest;
+  public frc.robot.autosubsystems.AutoNav1 AutoNav1;
 
     // Auto (Default):
     private static final String kDefaultAuto = "Default";
@@ -50,6 +55,8 @@ public class Robot extends TimedRobot {
   
   
   public Robot() {
+     //this.AutoTest = new AutoTest();
+     this.AutoNav1 = new AutoNav1();
      this.EncoderActions = new EncoderActions();
      this.DriveBase = new DriveBase(1, 2, 3, 4);
   }
@@ -94,19 +101,32 @@ public class Robot extends TimedRobot {
 
   @Override 
   public void autonomousInit() {    
+
+      Timer Timer = new Timer();
+
+      Timer.start();
+      AutoNav1.forward(2, 0.15);
+      Timer.delay(1);
+      AutoNav1.rightTurn(1, 0.15);
+      Timer.delay(1);
+      AutoNav1.forward(2, 0.15);
+      Timer.delay(1);
+      AutoNav1.rightTurn(1, 0.15);
+      Timer.delay(1);
+      AutoNav1.forward(2, 0.15);
+      Timer.delay(1);
+      AutoNav1.rightTurn(1, 0.15);
+      Timer.delay(1);
+      AutoNav1.forward(2, 0.15);
+      Timer.delay(1);
+      AutoNav1.rightTurn(1, 0.15);
       base.initialize();
       base.reset();
+      
   }
 
   @Override
   public void autonomousPeriodic() {
-    //EncoderValues.encoderReading();
-    //EncoderActions.forwardDrive(1);
-    EncoderActions.forwardDrive(1);
-    EncoderActions.getDistance();
-    //EncoderActions.clockwiseTurn(90);
-    //EncoderActions.getEncoderReset();
-    //EncoderActions.forwardDrive(2);    
   }
 
   @Override
