@@ -64,67 +64,7 @@ public class AutoNav1 {
         this.rightrearencoder = DriveBase().rightrearmotor.getEncoder();
 
         this.AutoCorrect = new AutoCorrect();
-
     }
-    /*
-    double step = 1;
-    public void movementTest() {
-      while (step == 2) {
-        if(leftfrontencoder.getPosition() < (Constants.Robot.Encoders.ticksperrotation*4) || rightfrontencoder.getPosition() < (Constants.Robot.Encoders.ticksperrotation*4)) {
-            encoderReadings();
-            forward();
-        }
-        while(leftfrontencoder.getPosition() > (Constants.Robot.Encoders.ticksperrotation*4) || rightfrontencoder.getPosition() > (Constants.Robot.Encoders.ticksperrotation*4)) {
-            encoderReadings();  
-            leftfrontmotor.set(0);
-            leftrearmotor.set(0);
-            rightfrontmotor.set(0);
-            rightrearmotor.set(0);
-            //AutoCorrect.autoCorrectLeft(200);
-            //AutoCorrect.autoCorrectRight(200);
-        }
-      }
-      while (step == 2) {
-      if (rightfrontencoder.getPosition() > ((Constants.Robot.Encoders.ticksperrotation*4)-340) || leftfrontencoder.getPosition() > ((Constants.Robot.Encoders.ticksperrotation*4)-340)) {
-          leftfrontmotor.set(-0.1);
-          leftrearmotor.set(-0.1);
-          rightfrontmotor.set(-0.1);
-          rightrearmotor.set(-0.1);
-      }
-      if (rightfrontencoder.getPosition() < ((Constants.Robot.Encoders.ticksperrotation*4)-340) || leftfrontencoder.getPosition() < ((Constants.Robot.Encoders.ticksperrotation*4)-340)) {
-          leftfrontmotor.set(0);
-          leftrearmotor.set(0);
-          rightfrontmotor.set(0);
-          rightrearmotor.set(0);
-      
-        }
-      }
-    }
-    */
-/*
-    public void testMethod(double desired, double targetrightdistance) {
-        getDistance();
-        double actualRightDistance = ((rightfrontencoder.getPosition() + rightrearencoder.getPosition()) / 2);
-        double actual = ((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
-        double target = desired + actual;
-
-        while(target < actual) {
-            actual = ((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
-            System.out.println("Actual Distance is " + actual + "   " + "Target Distance is " + target);
-            System.out.println("Leftfrontmotor = " + leftfrontencoder.getPosition() + "   " + "Leftrearmotor = " + leftrearencoder.getPosition());
-            leftfrontmotor.set(0.1);
-            leftrearmotor.set(0.1);
-            //rightfrontmotor.set(0.1);
-            //rightrearmotor.set(0.1);      
-            //System.out.println("Here is the actual distance" + );  
-          }
-        
-          leftfrontmotor.set(0);
-          leftrearmotor.set(0);
-          //rightfrontmotor.set(0);
-          //rightrearmotor.set(0);  
-        }
-*/
 
         public void forward(double desired, double speed) {
           getDistance();
@@ -134,19 +74,12 @@ public class AutoNav1 {
   
           while(target < actual) {
               actual = ((leftfrontencoder.getPosition() + -rightfrontencoder.getPosition()) / 2);
-              System.out.println("");
-              //System.out.println("Leftfrontmotor = " + leftfrontencoder.getPosition() + "   " + "Leftrearmotor = " + leftrearencoder.getPosition());
               leftfrontmotor.set(-speed);
               leftrearmotor.set(-speed);
               rightfrontmotor.set(speed);
               rightrearmotor.set(speed);      
-              //System.out.println("Here is the actual distance" + );  
             }
-          
-            leftfrontmotor.set(0);
-            leftrearmotor.set(0);
-            rightfrontmotor.set(0);
-            rightrearmotor.set(0);  
+            stop();
           }
 
         public void rightTurn(double desired, double speed) {
@@ -157,20 +90,12 @@ public class AutoNav1 {
 
           while(target < actual) {
             actual = ((leftfrontencoder.getPosition() + rightfrontencoder.getPosition()) / 2);
-            System.out.print("Acutal   " + actual + "        " + "Target    "  + target);
-            System.out.println("");
-            //System.out.println("Leftfrontmotor = " + leftfrontencoder.getPosition() + "   " + "Leftrearmotor = " + leftrearencoder.getPosition());
             leftfrontmotor.set(-speed);
             leftrearmotor.set(-speed);
             rightfrontmotor.set(-speed);
             rightrearmotor.set(-speed);      
-            //System.out.println("Here is the actual distance" + );  
           }
-        
-          leftfrontmotor.set(0);
-          leftrearmotor.set(0);
-          rightfrontmotor.set(0);
-          rightrearmotor.set(0);  
+          stop();
         }
         
         public void leftTurn(double desired, double speed) {
@@ -181,25 +106,14 @@ public class AutoNav1 {
 
           while(target > actual) {
             actual = ((leftfrontencoder.getPosition() + rightfrontencoder.getPosition()) / 2);
-            System.out.print("Acutal   " + actual + "        " + "Target    "  + target);
-            System.out.println("");
-            //System.out.println("Leftfrontmotor = " + leftfrontencoder.getPosition() + "   " + "Leftrearmotor = " + leftrearencoder.getPosition());
             leftfrontmotor.set(speed);
             leftrearmotor.set(speed);
             rightfrontmotor.set(speed);
             rightrearmotor.set(speed);      
-            //System.out.println("Here is the actual distance" + );  
           }
-        
-          leftfrontmotor.set(0);
-          leftrearmotor.set(0);
-          rightfrontmotor.set(0);
-          rightrearmotor.set(0);  
+          stop();
         }
         
-    
-
-
     public static frc.robot.subsystems.DriveBase DriveBase() {
         return new frc.robot.subsystems.DriveBase(1, 2, 3, 4);
     }
@@ -217,9 +131,6 @@ public class AutoNav1 {
       leftrearencoder.getPosition();
       rightfrontencoder.getPosition();
       rightrearencoder.getPosition();
-      
-      double averageRightDistance = ((rightfrontencoder.getPosition() + rightrearencoder.getPosition()) / 2);
-      double averageLeftDistance = ((leftfrontencoder.getPosition() + leftrearencoder.getPosition()) / 2);
     }
 
     public void forward() {
