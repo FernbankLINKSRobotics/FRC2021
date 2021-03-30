@@ -2,9 +2,10 @@ package frc.robot.autosubsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+
 import frc.robot.subsystems.Constants;
 
-public class EncoderActions {
+public class ExampleEncoderActions {
 
     /*------------------------------------------------------------------------------------------------------*/
     // Defining Motor and Encoders:
@@ -48,7 +49,7 @@ public class EncoderActions {
     /*------------------------------------------------------------------------------------------------------*/
 
     // init
-    public EncoderActions() {
+    public ExampleEncoderActions() {
         this.leftfrontmotor = DriveBase().leftfrontmotor;
         this.leftrearmotor = DriveBase().leftrearmotor;
         this.rightfrontmotor = DriveBase().rightfrontmotor;

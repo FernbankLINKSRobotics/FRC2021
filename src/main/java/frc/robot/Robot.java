@@ -11,10 +11,12 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.autosubsystems.EncoderActions;
+import frc.robot.autosubsystems.AutoCommands;
+import frc.robot.autosubsystems.ExampleEncoderActions;
 import frc.robot.autosubsystems.EncoderValues;
 import frc.robot.subsystems.DriveBase;
 
@@ -41,7 +43,9 @@ public class Robot extends TimedRobot {
 
   public static DriveBase base = new DriveBase(1, 2, 3, 4);
 
-  public EncoderActions EncoderActions;
+  public ExampleEncoderActions ExampleEncoderActions;
+  //public AutoTest AutoTest;
+  public frc.robot.autosubsystems.AutoCommands AutoCommands;
 
     // Auto (Default):
     private static final String kDefaultAuto = "Default";
@@ -50,7 +54,9 @@ public class Robot extends TimedRobot {
   
   
   public Robot() {
-     this.EncoderActions = new EncoderActions();
+     //this.AutoTest = new AutoTest();
+     this.AutoCommands = new AutoCommands();
+     this.ExampleEncoderActions = new ExampleEncoderActions();
      this.DriveBase = new DriveBase(1, 2, 3, 4);
   }
 
@@ -94,19 +100,32 @@ public class Robot extends TimedRobot {
 
   @Override 
   public void autonomousInit() {    
+
+      Timer Timer = new Timer();
+
+      Timer.start();
+      AutoCommands.forward(2, 0.15);
+      Timer.delay(1);
+      AutoCommands.rightTurn(1, 0.15);
+      Timer.delay(1);
+      AutoCommands.forward(2, 0.15);
+      Timer.delay(1);
+      AutoCommands.rightTurn(1, 0.15);
+      Timer.delay(1);
+      AutoCommands.forward(2, 0.15);
+      Timer.delay(1);
+      AutoCommands.rightTurn(1, 0.15);
+      Timer.delay(1);
+      AutoCommands.forward(2, 0.15);
+      Timer.delay(1);
+      AutoCommands.rightTurn(1, 0.15);
       base.initialize();
       base.reset();
+      
   }
 
   @Override
   public void autonomousPeriodic() {
-    //EncoderValues.encoderReading();
-    //EncoderActions.forwardDrive(1);
-    EncoderActions.forwardDrive(1);
-    EncoderActions.getDistance();
-    //EncoderActions.clockwiseTurn(90);
-    //EncoderActions.getEncoderReset();
-    //EncoderActions.forwardDrive(2);    
   }
 
   @Override
