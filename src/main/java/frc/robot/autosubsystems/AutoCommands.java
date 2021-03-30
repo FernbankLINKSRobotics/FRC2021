@@ -7,7 +7,6 @@ import frc.robot.subsystems.Constants;
 import frc.robot.autosubsystems.AutoCorrect;
 
 public class AutoCommands {
-
     /*------------------------------------------------------------------------------------------------------*/
     // Defining:
 
@@ -53,6 +52,7 @@ public class AutoCommands {
 
     // init
     public AutoCommands() {
+
         this.leftfrontmotor = DriveBase().leftfrontmotor;
         this.leftrearmotor = DriveBase().leftrearmotor;
         this.rightfrontmotor = DriveBase().rightfrontmotor;
@@ -66,7 +66,7 @@ public class AutoCommands {
         this.AutoCorrect = new AutoCorrect();
     }
 
-        public void forward(double desired, double speed) {
+        public void forward(double desired, double speed, double intakespeed) {
           getDistance();
           desired = desired * Constants.Robot.Encoders.block;
           double actual = ((leftfrontencoder.getPosition() + -rightfrontencoder.getPosition()) / 2);
