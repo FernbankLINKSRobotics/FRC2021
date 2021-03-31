@@ -32,6 +32,11 @@ public class Constants {
             public static final double zero = 0.0;
             public static final double holdvelocity = -0.2;
         }
+        
+        public class InternalIntake {
+            public static final double upstreamvelocity = 0.5;
+            public static final double firevelocity = 0.5;
+        }
     }
 
     public class Robot {  // File Robot.java
@@ -53,5 +58,14 @@ public class Constants {
         public static final double mediumvelocity = 4;
         public static final double highvelocity = 10;
 
+    }
+
+    public class Miscellaneous {
+        // Ctrl + Click these:
+        public static final String GalacticSearchPathA = "https://drive.google.com/file/d/1MqgVkRMYJU1uSFocNPDPhAya1UzYpbfO/view?usp=sharing";
+        public static final String GalacticSearchPathB = "https://drive.google.com/file/d/1G7EiDR72gUnLWYOTLIeRuydL8sMISSXr/view?usp=sharing";
+        public static final String AutoNavBarrelRacePath = "https://drive.google.com/file/d/1X9xwL_okj-gKlCmrSjrOGJVX9gVblS8N/view?usp=sharing";
+        public static final String AutoNavBouncePath = "https://drive.google.com/file/d/1FxbwO75Iy6Jo_N9NVvj1wMnp7mkxT6Ql/view?usp=sharing";
+        public static final String AutoNavSlalomPath = "https://drive.google.com/file/d/1yMqzmcAT7viHvbSk-a2Ho7NP8HiCow0O/view?usp=sharing";
     }
 }

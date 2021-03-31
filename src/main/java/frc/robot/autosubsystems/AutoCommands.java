@@ -1,12 +1,16 @@
 package frc.robot.autosubsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import frc.robot.subsystems.Constants;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.autosubsystems.AutoCorrect;
 
 public class AutoCommands {
+
     /*------------------------------------------------------------------------------------------------------*/
     // Defining:
 
@@ -19,6 +23,13 @@ public class AutoCommands {
     public CANEncoder leftrearencoder;
     public CANEncoder rightfrontencoder;
     public CANEncoder rightrearencoder;
+
+    public WPI_TalonSRX Arm;
+    public WPI_VictorSPX Mouth;
+    public WPI_VictorSPX InternalIntake;
+    public WPI_VictorSPX ConveyorBelt;
+    public WPI_TalonSRX ShooterA;
+    public WPI_TalonSRX ShooterB;
 
     public AutoCorrect AutoCorrect;
 
@@ -52,27 +63,36 @@ public class AutoCommands {
 
     // init
     public AutoCommands() {
-
         this.leftfrontmotor = DriveBase().leftfrontmotor;
         this.leftrearmotor = DriveBase().leftrearmotor;
         this.rightfrontmotor = DriveBase().rightfrontmotor;
         this.rightrearmotor = DriveBase().rightrearmotor;
 
+        this.Arm = DriveBase().Arm;
+        this.Mouth = DriveBase().Mouth;
+        this.InternalIntake = DriveBase().InternalIntake;
+        this.ConveyorBelt = DriveBase().ConveyorBelt;
+        this.ShooterA = DriveBase().ShooterA;
+        this.ShooterB = DriveBase().ShooterB;
+
         this.leftfrontencoder = DriveBase().leftfrontmotor.getEncoder();    
         this.leftrearencoder = DriveBase().leftrearmotor.getEncoder();    
         this.rightfrontencoder = DriveBase().rightfrontmotor.getEncoder();    
         this.rightrearencoder = DriveBase().rightrearmotor.getEncoder();
-
+        
         this.AutoCorrect = new AutoCorrect();
     }
 
-        public void forward(double desired, double speed, double intakespeed) {
+        public void forward(double desired, double speed, double intakeSpeed) {
           getDistance();
           desired = desired * Constants.Robot.Encoders.block;
           double actual = ((leftfrontencoder.getPosition() + -rightfrontencoder.getPosition()) / 2);
           double target = -1*desired + actual;
-  
+
           while(target < actual) {
+              Mouth.set(intakeSpeed);
+              InternalIntake.set(intakeSpeed);
+              ConveyorBelt.set(intakeSpeed);
               actual = ((leftfrontencoder.getPosition() + -rightfrontencoder.getPosition()) / 2);
               leftfrontmotor.set(-speed);
               leftrearmotor.set(-speed);
@@ -84,7 +104,7 @@ public class AutoCommands {
 
         public void rightTurn(double desired, double speed) {
           getDistance();
-          desired = desired * Constants.Robot.Encoders.ticksper90degree;
+          desired = (desired/90) * Constants.Robot.Encoders.ticksper90degree;
           double actual = ((leftfrontencoder.getPosition() + rightfrontencoder.getPosition()) / 2);
           double target = -1*desired + actual;
 
@@ -100,7 +120,7 @@ public class AutoCommands {
         
         public void leftTurn(double desired, double speed) {
           getDistance();
-          desired = desired * Constants.Robot.Encoders.ticksper90degree;
+          desired = (desired/90) * Constants.Robot.Encoders.ticksper90degree;
           double actual = ((leftfrontencoder.getPosition() + rightfrontencoder.getPosition()) / 2);
           double target = desired + actual;
 
@@ -141,9 +161,18 @@ public class AutoCommands {
     }
 
     public void stop() {
-      leftfrontmotor.set(0);
-      leftrearmotor.set(0);
-      rightfrontmotor.set(0);
-      rightrearmotor.set(0);
+      double zeroVelocity = 0;
+      leftfrontmotor.set(zeroVelocity);
+      leftrearmotor.set(zeroVelocity);
+      rightfrontmotor.set(zeroVelocity);
+      rightrearmotor.set(zeroVelocity);
+      Mouth.set(zeroVelocity);
+      InternalIntake.set(zeroVelocity);
+      ConveyorBelt.set(zeroVelocity);
+    }
+
+    public void autoCorrect(double leftTarget, double rightTarget) {
+      AutoCorrect.autoCorrectLeft(leftTarget);
+      AutoCorrect.autoCorrectRight(rightTarget);
     }
 }

@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +31,10 @@ public class DriveBase implements DriveAction {
     // - Arm & Intake Variables - 
     public WPI_TalonSRX Arm = new WPI_TalonSRX(5);
     public WPI_VictorSPX Mouth = new WPI_VictorSPX(6);
+    public WPI_VictorSPX InternalIntake = new WPI_VictorSPX(15);
+    public WPI_VictorSPX ConveyorBelt = new WPI_VictorSPX(16);
+    public WPI_TalonSRX ShooterA = new WPI_TalonSRX(25);
+    public WPI_TalonSRX ShooterB = new WPI_TalonSRX(26);
 
     // - Xbox Controllers - 
     public static XboxController controller = new XboxController(0);
@@ -121,40 +126,47 @@ public class DriveBase implements DriveAction {
         double extakeVelocity = Constants.DriveBase.Arm.extakevelocity;
         double zeroVelocity = Constants.DriveBase.Arm.zero;
         double holdVelocity = Constants.DriveBase.Arm.holdvelocity;
+        double upstreamVelocity = Constants.DriveBase.InternalIntake.upstreamvelocity;
+        double fireVelocity = Constants.DriveBase.InternalIntake.firevelocity;
 
         if (controller.getAButtonPressed()){
             Arm.set(raiseVelocity); 
         }
-
-        if (controller.getAButtonReleased()){
-            Arm.set(zeroVelocity);
-        }
-
+        
         if (controller.getBButtonPressed()){
             Arm.set(lowerVelocity);
         }
-
-        if (controller.getBButtonReleased()) {
-            Arm.set(zeroVelocity);
-        }
-
+        
         if (controller.getXButtonPressed()) {
-            Mouth.set(intakeVelocity);
-        }
-
-        if (controller.getXButtonReleased()) {
-            Mouth.set(zeroVelocity);
+            Timer Timer = new Timer();
+            Timer.start();
+            Mouth.set(intakeVelocity);  
+            InternalIntake.set(upstreamVelocity);
+            ConveyorBelt.set(-upstreamVelocity);
+            edu.wpi.first.wpilibj.Timer.delay(.25);
+            Timer.stop();          
         }
 
         if (controller.getYButtonPressed()) {
             Mouth.set(extakeVelocity); 
         }
-
-        if (controller.getYButtonReleased()) {
-            Mouth.set(zeroVelocity);
-        }
     }
     
+    public void highShooter (XboxController controller, GenericHID.Hand left, GenericHID.Hand right) {
+        double upstreamVelocity = Constants.DriveBase.InternalIntake.upstreamvelocity;
+        double fireVelocity = Constants.DriveBase.InternalIntake.firevelocity;
+        double zeroVelocity = Constants.DriveBase.Arm.zero;
+
+        if (controller.getBumperPressed(right)) {
+            Timer Timer = new Timer();
+            Timer.start();
+            ShooterA.set(fireVelocity);
+            ShooterB.set(fireVelocity);
+            edu.wpi.first.wpilibj.Timer.delay(.25);
+            Timer.stop();     
+        }
+    }
+
 //------------------------------------------------------------------------------------------------------------
 // NEOSpark Max Encoder Logic Objects:
 
