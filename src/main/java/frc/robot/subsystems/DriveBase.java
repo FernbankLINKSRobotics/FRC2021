@@ -120,24 +120,24 @@ public class DriveBase implements DriveAction {
     }
 
     public void armSystem (XboxController controller, GenericHID.Hand left, GenericHID.Hand right) {
-        double raiseVelocity = Constants.DriveBase.Arm.raisevelocity;
-        double lowerVelocity = Constants.DriveBase.Arm.lowervelocity;
-        double intakeVelocity = Constants.DriveBase.Arm.intakevelocity;
-        double extakeVelocity = Constants.DriveBase.Arm.extakevelocity;
-        double zeroVelocity = Constants.DriveBase.Arm.zero;
-        double holdVelocity = Constants.DriveBase.Arm.holdvelocity;
-        double upstreamVelocity = Constants.DriveBase.InternalIntake.upstreamvelocity;
-        double fireVelocity = Constants.DriveBase.InternalIntake.firevelocity;
+        double raiseVelocity = Constants.Robot.Arm.raisevelocity;
+        double lowerVelocity = Constants.Robot.Arm.lowervelocity;
+        double intakeVelocity = Constants.Robot.Arm.intakevelocity;
+        double extakeVelocity = Constants.Robot.Arm.extakevelocity;
+        double zeroVelocity = Constants.Robot.Arm.zero;
+        double holdVelocity = Constants.Robot.Arm.holdvelocity;
+        double upstreamVelocity = Constants.Robot.InternalIntake.upstreamvelocity;
+        double fireVelocity = Constants.Robot.InternalIntake.firevelocity;
 
-        if (controller.getAButtonPressed()){
-            Arm.set(raiseVelocity); 
-        }
-        
-        if (controller.getBButtonPressed()){
+        if (controller.getBumperPressed(left)){
+            Timer Timer = new Timer();
+            Timer.start();
             Arm.set(lowerVelocity);
+            edu.wpi.first.wpilibj.Timer.delay(0.2);
+            Timer.stop();      
         }
         
-        if (controller.getXButtonPressed()) {
+        if (controller.getBumperPressed(right)) {
             Timer Timer = new Timer();
             Timer.start();
             Mouth.set(intakeVelocity);  
@@ -153,17 +153,52 @@ public class DriveBase implements DriveAction {
     }
     
     public void highShooter (XboxController controller, GenericHID.Hand left, GenericHID.Hand right) {
-        double upstreamVelocity = Constants.DriveBase.InternalIntake.upstreamvelocity;
-        double fireVelocity = Constants.DriveBase.InternalIntake.firevelocity;
-        double zeroVelocity = Constants.DriveBase.Arm.zero;
+        double upstreamVelocity = Constants.Robot.InternalIntake.upstreamvelocity;
+        double fireVelocity = Constants.Robot.InternalIntake.firevelocity;
+        double zeroVelocity = Constants.Robot.Arm.zero;
+        double profileA = Constants.Robot.HighShooter.profileA;
+        double profileB = Constants.Robot.HighShooter.profileB;
+        double profileC = Constants.Robot.HighShooter.profileC;
+        double profileD = Constants.Robot.HighShooter.profileD;
 
-        if (controller.getBumperPressed(right)) {
+        if (controller.getAButtonPressed()) {
             Timer Timer = new Timer();
             Timer.start();
-            ShooterA.set(fireVelocity);
-            ShooterB.set(fireVelocity);
-            edu.wpi.first.wpilibj.Timer.delay(.25);
+            ConveyorBelt.set(-upstreamVelocity);
+            ShooterA.set(profileA);
+            ShooterB.set(profileA);
+            edu.wpi.first.wpilibj.Timer.delay(8);
             Timer.stop();     
+        }
+
+        if (controller.getBButtonPressed()) {
+            Timer Timer = new Timer();
+            Timer.start();
+            ConveyorBelt.set(-upstreamVelocity);
+            ShooterA.set(profileB);
+            ShooterB.set(profileB);
+            edu.wpi.first.wpilibj.Timer.delay(8);
+            Timer.stop();
+        }        
+        
+        if (controller.getYButtonPressed()) {
+            Timer Timer = new Timer();
+            Timer.start();
+            ConveyorBelt.set(-upstreamVelocity);
+            ShooterA.set(profileC);
+            ShooterB.set(profileC);
+            edu.wpi.first.wpilibj.Timer.delay(8);
+            Timer.stop();
+        }
+
+        if (controller.getXButtonPressed()) {
+            Timer Timer = new Timer();
+            Timer.start();
+            ConveyorBelt.set(-upstreamVelocity);
+            ShooterA.set(profileD);
+            ShooterB.set(profileD);
+            edu.wpi.first.wpilibj.Timer.delay(8);
+            Timer.stop();
         }
     }
 

@@ -21,22 +21,6 @@ public class Constants {
         public class MotorControllers {
             public static final double openramprate = 0.5;
         }
-
-        public class Arm {
-            public static final double raisevelocity = -0.8;
-            public static final double lowervelocity = 0.8;
-
-            public static final double intakevelocity = 0.3;
-            public static final double extakevelocity = -0.2;
-
-            public static final double zero = 0.0;
-            public static final double holdvelocity = -0.2;
-        }
-        
-        public class InternalIntake {
-            public static final double upstreamvelocity = 0.5;
-            public static final double firevelocity = 0.5;
-        }
     }
 
     public class Robot {  // File Robot.java
@@ -51,6 +35,31 @@ public class Constants {
             public static final double ticksper90degree = 300;
             public static final double block = ((30/19) * 365);
         }
+        
+        public class Arm {
+            public static final double raisevelocity = -0.8;
+            public static final double lowervelocity = 0.3;  // Needs Testing.
+
+            public static final double intakevelocity = 0.3;
+            public static final double extakevelocity = -0.2;
+
+            public static final double zero = 0.0;
+            public static final double holdvelocity = -0.2;
+        }
+        
+        public class InternalIntake {
+            public static final double upstreamvelocity = 0.5;
+            public static final double firevelocity = 0.5;
+        }
+        
+        public class HighShooter {
+            // Velocities for Fly Wheel Shooter (Larger is faster).
+            public static final double profileA = 0.3;
+            public static final double profileB = 0.5;
+            public static final double profileC = 0.7;
+            public static final double profileD = 0.9;
+        }
+        
     }
 
     public class Autonomous {  // All files with folders autoarmsubsystems and autodrivesubsystems
