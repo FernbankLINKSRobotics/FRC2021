@@ -11,15 +11,15 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.autosubsystems.AutoCommands;
-import frc.robot.autosubsystems.ExampleEncoderActions;
 import frc.robot.autosubsystems.EncoderValues;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.autosubsystems.AutoProfiles;
+import frc.robot.subsystems.Arm;
+import frc.robot.autosubsystems.ExampleProfile;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,9 +43,10 @@ public class Robot extends TimedRobot {
   public CANSparkMax rightrearmotor;
 
   public static DriveBase base = new DriveBase(1, 2, 3, 4);
-  public ExampleEncoderActions ExampleEncoderActions;
   public frc.robot.autosubsystems.AutoCommands AutoCommands;
   public frc.robot.autosubsystems.AutoProfiles AutoProfiles;
+  public frc.robot.subsystems.Arm Arm;
+  public frc.robot.autosubsystems.ExampleProfile ExampleProfile;
 
   // Auto (Default):
   private static final String kDefaultAuto = "Default";
@@ -55,9 +56,10 @@ public class Robot extends TimedRobot {
   public Robot() {
     // this.AutoTest = new AutoTest();
     this.AutoCommands = new AutoCommands();
-    this.ExampleEncoderActions = new ExampleEncoderActions();
     this.DriveBase = new DriveBase(1, 2, 3, 4);
     this.AutoProfiles = new AutoProfiles();
+    this.Arm = new Arm();
+    this.ExampleProfile = new ExampleProfile();
   }
 
   // ------------------------------------------------------------------------------------------------------------
@@ -101,7 +103,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    AutoProfiles.GLPathA();  
+    //AutoProfiles.GLPathB();  
   }
 
   @Override
@@ -116,11 +118,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    EncoderValues.encoderReading();
     reseter(); 
+
     drive();
     armControl();
     internalControl();
+    //encoderReading();
   }
 
   public void drive() {
@@ -128,13 +131,17 @@ public class Robot extends TimedRobot {
   }
 
   public void internalControl() {
-    DriveBase.highShooter(controller, left, right);
+    Arm.highShooter(controller, left, right);
   }
 
   public void armControl() {
-    DriveBase.armSystem(controller, left, right);
+    Arm.armSystem(controller, left, right);
   }
 
+  public void encoderReading() {
+    EncoderValues.encoderReading();
+  }
+  
   @Override
   public void disabledInit() {
   }

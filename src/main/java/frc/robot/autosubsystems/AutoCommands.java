@@ -68,12 +68,12 @@ public class AutoCommands {
         this.rightfrontmotor = DriveBase().rightfrontmotor;
         this.rightrearmotor = DriveBase().rightrearmotor;
 
-        this.Arm = DriveBase().Arm;
-        this.Mouth = DriveBase().Mouth;
-        this.InternalIntake = DriveBase().InternalIntake;
-        this.ConveyorBelt = DriveBase().ConveyorBelt;
-        this.ShooterA = DriveBase().ShooterA;
-        this.ShooterB = DriveBase().ShooterB;
+        this.Arm = Arm().Arm;
+        this.Mouth = Arm().Mouth;
+        this.InternalIntake = Arm().InternalIntake;
+        this.ConveyorBelt = Arm().ConveyorBelt;
+        this.ShooterA = Arm().ShooterA;
+        this.ShooterB = Arm().ShooterB;
 
         this.leftfrontencoder = DriveBase().leftfrontmotor.getEncoder();    
         this.leftrearencoder = DriveBase().leftrearmotor.getEncoder();    
@@ -83,6 +83,8 @@ public class AutoCommands {
         this.AutoCorrect = new AutoCorrect();
     }
 
+    
+
         public void forward(double desired, double speed, double intakeSpeed) {
           getDistance();
           desired = desired * Constants.Robot.Encoders.block;
@@ -90,6 +92,7 @@ public class AutoCommands {
           double target = -1*desired + actual;
 
           while(target < actual) {
+
               Mouth.set(intakeSpeed);
               InternalIntake.set(intakeSpeed);
               ConveyorBelt.set(intakeSpeed);
@@ -136,6 +139,10 @@ public class AutoCommands {
         
     public static frc.robot.subsystems.DriveBase DriveBase() {
         return new frc.robot.subsystems.DriveBase(1, 2, 3, 4);
+    }
+
+    public static frc.robot.subsystems.Arm Arm() {
+        return new frc.robot.subsystems.Arm();
     }
 
     public void encoderReadings() {

@@ -7,6 +7,5 @@ public interface DriveAction {
     void stop();
 
     void log();
-
     
 }

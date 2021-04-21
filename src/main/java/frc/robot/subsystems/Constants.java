@@ -37,8 +37,8 @@ public class Constants {
         }
         
         public class Arm {
-            public static final double raisevelocity = -0.8;
-            public static final double lowervelocity = 0.3;  // Needs Testing.
+            public static final double raisevelocity = 0.45;
+            public static final double lowervelocity = -0.3;  // Needs Testing.
 
             public static final double intakevelocity = 0.3;
             public static final double extakevelocity = -0.2;

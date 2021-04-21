@@ -1,12 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,14 +25,6 @@ public class DriveBase implements DriveAction {
     public PIDController ballTurnController = new PIDController(pTurn, iTurn, dTurn);
     public PIDController ballDriveController = new PIDController(pDrive, iDrive, dDrive);
     
-    // - Arm & Intake Variables - 
-    public WPI_TalonSRX Arm = new WPI_TalonSRX(5);
-    public WPI_VictorSPX Mouth = new WPI_VictorSPX(6);
-    public WPI_VictorSPX InternalIntake = new WPI_VictorSPX(15);
-    public WPI_VictorSPX ConveyorBelt = new WPI_VictorSPX(16);
-    public WPI_TalonSRX ShooterA = new WPI_TalonSRX(25);
-    public WPI_TalonSRX ShooterB = new WPI_TalonSRX(26);
-
     // - Xbox Controllers - 
     public static XboxController controller = new XboxController(0);
   
@@ -86,21 +75,14 @@ public class DriveBase implements DriveAction {
         leftrearmotor.getEncoder().setPosition(Constants.DriveBase.Encoders.zero);
         rightfrontmotor.getEncoder().setPosition(Constants.DriveBase.Encoders.zero);
         rightrearmotor.getEncoder().setPosition(Constants.DriveBase.Encoders.zero);
-        
-
-        // Not needed as there is no Gyro on the current robot:
-        // gyro.reset();
 
         turnController.setSetpoint(0);
         driveController.setSetpoint(0);
     }
 
-    //------------------------------------------------------------------------------------------------------------
-    // Teleop Drive:
     public void arcadeDrive(XboxController controller, GenericHID.Hand left, GenericHID.Hand right) {
         double throttle = 0;
         double turn = 0;
-        
 
         if (controller.getY(left) > 0.05 || controller.getY(left) < -0.05) {
             throttle = controller.getY(left);
@@ -116,150 +98,12 @@ public class DriveBase implements DriveAction {
 
         rightfrontmotor.set(turn - throttle);
         rightrearmotor.set(turn - throttle);
-        
     }
-
-    public void armSystem (XboxController controller, GenericHID.Hand left, GenericHID.Hand right) {
-        double raiseVelocity = Constants.Robot.Arm.raisevelocity;
-        double lowerVelocity = Constants.Robot.Arm.lowervelocity;
-        double intakeVelocity = Constants.Robot.Arm.intakevelocity;
-        double extakeVelocity = Constants.Robot.Arm.extakevelocity;
-        double zeroVelocity = Constants.Robot.Arm.zero;
-        double holdVelocity = Constants.Robot.Arm.holdvelocity;
-        double upstreamVelocity = Constants.Robot.InternalIntake.upstreamvelocity;
-        double fireVelocity = Constants.Robot.InternalIntake.firevelocity;
-
-        if (controller.getBumperPressed(left)){
-            Timer Timer = new Timer();
-            Timer.start();
-            Arm.set(lowerVelocity);
-            edu.wpi.first.wpilibj.Timer.delay(0.2);
-            Timer.stop();      
-        }
-        
-        if (controller.getBumperPressed(right)) {
-            Timer Timer = new Timer();
-            Timer.start();
-            Mouth.set(intakeVelocity);  
-            InternalIntake.set(upstreamVelocity);
-            ConveyorBelt.set(-upstreamVelocity);
-            edu.wpi.first.wpilibj.Timer.delay(.25);
-            Timer.stop();          
-        }
-
-        if (controller.getYButtonPressed()) {
-            Mouth.set(extakeVelocity); 
-        }
-    }
-    
-    public void highShooter (XboxController controller, GenericHID.Hand left, GenericHID.Hand right) {
-        double upstreamVelocity = Constants.Robot.InternalIntake.upstreamvelocity;
-        double fireVelocity = Constants.Robot.InternalIntake.firevelocity;
-        double zeroVelocity = Constants.Robot.Arm.zero;
-        double profileA = Constants.Robot.HighShooter.profileA;
-        double profileB = Constants.Robot.HighShooter.profileB;
-        double profileC = Constants.Robot.HighShooter.profileC;
-        double profileD = Constants.Robot.HighShooter.profileD;
-
-        if (controller.getAButtonPressed()) {
-            Timer Timer = new Timer();
-            Timer.start();
-            ConveyorBelt.set(-upstreamVelocity);
-            ShooterA.set(profileA);
-            ShooterB.set(profileA);
-            edu.wpi.first.wpilibj.Timer.delay(8);
-            Timer.stop();     
-        }
-
-        if (controller.getBButtonPressed()) {
-            Timer Timer = new Timer();
-            Timer.start();
-            ConveyorBelt.set(-upstreamVelocity);
-            ShooterA.set(profileB);
-            ShooterB.set(profileB);
-            edu.wpi.first.wpilibj.Timer.delay(8);
-            Timer.stop();
-        }        
-        
-        if (controller.getYButtonPressed()) {
-            Timer Timer = new Timer();
-            Timer.start();
-            ConveyorBelt.set(-upstreamVelocity);
-            ShooterA.set(profileC);
-            ShooterB.set(profileC);
-            edu.wpi.first.wpilibj.Timer.delay(8);
-            Timer.stop();
-        }
-
-        if (controller.getXButtonPressed()) {
-            Timer Timer = new Timer();
-            Timer.start();
-            ConveyorBelt.set(-upstreamVelocity);
-            ShooterA.set(profileD);
-            ShooterB.set(profileD);
-            edu.wpi.first.wpilibj.Timer.delay(8);
-            Timer.stop();
-        }
-    }
-
-//------------------------------------------------------------------------------------------------------------
-// NEOSpark Max Encoder Logic Objects:
-
-    public void setDistance(double degrees) {
-        driveController.setSetpoint(degrees);
-    }
-
-    public double getLeftPosition() {
-        return leftfrontmotor.getEncoder().getPosition();
-    }
-
-    public double getRightPosition() {
-        return rightfrontmotor.getEncoder().getPosition();
-    }
-
-    public double getLeftVelocity() {
-        return leftfrontmotor.getEncoder().getVelocity();
-    }
-
-    public double getRightVelocity() {
-        return rightfrontmotor.getEncoder().getVelocity();
-    }
-
-    public double getAveragePosition() {
-        return ((getLeftPosition() - getRightPosition()) / 2);
-    }
-
-    public double getAverageVelocity() {
-        return ((getLeftVelocity() - getRightVelocity()) / 2);
-    }
-
-//------------------------------------------------------------------------------------------------------------
-// Auto Drive Objects (These are hardcoded, likely to removed soon!):
-
-    public boolean driveOnTarget() {
-        return driveController.atSetpoint(); 
-    }
-
-    double setpoint = 1;  // Setpoint for Auto.
-    public void setPoint(double setpoint) {
-        //double setpoint = new setpoint(1.0);
-    }
-
-    public void driveStop() {
-        leftfrontmotor.set(0);
-        leftrearmotor.set(0);
-        rightfrontmotor.set(0);
-        rightrearmotor.set(0);
-    }
-
-//------------------------------------------------------------------------------------------------------------
-
 
     @Override
     public void start() {
         SmartDashboard.putString("Starting...", null);
     }
-    
 
     @Override
     public void stop() {
@@ -268,12 +112,6 @@ public class DriveBase implements DriveAction {
                
     @Override
     public void log() {
-        SmartDashboard.putString("Data Report:", null);
-        SmartDashboard.putNumber("Left Drive Train Position: ", getLeftPosition());
-        SmartDashboard.putNumber("Right Drive Train Position: ", getRightPosition());
-        SmartDashboard.putNumber("Average Position: ", getAveragePosition());
-        SmartDashboard.putNumber("Left Drive Train Velocity: ", getLeftVelocity());
-        SmartDashboard.putNumber("Right Drive Train Velocity: ", getRightVelocity());
-        SmartDashboard.putNumber("Average Velocity: ", getAverageVelocity());
+        SmartDashboard.putString("Null log.:", null);
     }
 }
